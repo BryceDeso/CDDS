@@ -1,64 +1,72 @@
 #pragma once
+#include "iostream"
 template<typename T>
 class DynamicArray
 {
 public:
-	DynamicArray();
+	DynamicArray<T>();
+	~DynamicArray<T>();
+
 	void addItem(T item);
 	bool removeItem(T item);
 	bool getItem(int index, T* item);
-	int getLenght();
-
+	int getLength();
+	void bubbleSort();
+	void print();
 private:
 	T* m_items;
 	int m_lenght;
 };
 
 template<typename T>
-int DynamicArray<T>::getLenght()
+inline DynamicArray<T>::DynamicArray()
 {
-	return m_lenght;
+	m_items = nullptr;
+	m_lenght = 0;
 }
 
 template<typename T>
-void DynamicArray<T>::addItem(T item)
+inline DynamicArray<T>::~DynamicArray()
 {
-	T** tempArray = new DynamicArray * [m_lenght + 1];
+	delete[] m_items;
 
-	for (int i = 0; i < m_lenght; i++)
+}
+
+//Adds item to an array
+template<typename T>
+inline void DynamicArray<T>::addItem(T item)
+{
+	T* tempArray = new T[getLength() + 1];
+
+	for (int i = 0; i < getLength(); i++)
 	{
 		tempArray[i] = m_items[i];
 	}
-	
-	tempArray[m_lenght] = item;
+
+	tempArray[getLength()] = item;
 
 	m_items = tempArray;
 	m_lenght++;
 }
 
+//Removes item from an array
 template<typename T>
-bool DynamicArray<T>::removeItem(T index)
+inline bool DynamicArray<T>::removeItem(T item)
 {
-	if (index < 0 || index >= m_lenght)
-	{
-		return false;
-	}
-
 	bool itemRemoved = false;
 
-	T** tempArray = new DynamicArray * [m_lenght - 1];
+	T* tempArray = new T[getLength() - 1];
 
 	int j = 0;
-	for (int i = 0; i < m_lenght; i++)
+	for (int i = 0; i < getLength(); i++)
 	{
-		if (i != index)
+		if (item != m_items[i])
 		{
 			tempArray[j] = m_items[i];
 			j++;
 		}
 		else
 		{
-			delete m_items[i];
 			itemRemoved = true;
 		}
 	}
@@ -68,9 +76,49 @@ bool DynamicArray<T>::removeItem(T index)
 	return itemRemoved;
 }
 
+//gets and item from an array
+template<typename T>
+inline bool DynamicArray<T>::getItem(int index, T* item)
+{
+	if (index < 0 || index >= m_lenght)
+	{
+		return false;
+	}
+
+	item = &m_items[index];
+
+	return true;
+}
+
+//Gets the length of an array
+template<typename T>
+inline int DynamicArray<T>::getLength()
+{
+	return m_lenght;
+}
 
 template<typename T>
-bool DynamicArray<T>::getItem(int index, T* item)
+inline void DynamicArray<T>::bubbleSort()
 {
+	for (int i = 0; i < m_lenght; i++)
+	{
+		for (int j = m_lenght - 1; j > i; j--)
+		{
+			if (m_items[j] < m_items[j-1])
+			{
+				T temp = m_items[j];
+				m_items[j] = m_items[j - 1];
+				m_items[j - 1] = temp;
+			}
+		}
+	}
+}
 
+template<typename T>
+inline void DynamicArray<T>::print()
+{
+	for (int i = 0; i < getLength(); i++)
+	{
+		std::cout << m_items[i] << std::endl;
+	}
 }

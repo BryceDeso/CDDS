@@ -1,23 +1,6 @@
 #pragma once
-#include <iostream>
 #include "ShopKeep.h"
-
-template<typename T>
-void bubbleSort(T array[], int lenght)
-{
-	for (int i = 0; i < lenght; i++)
-	{
-		for (int j = lenght - 1; j > i; j--)
-		{
-			if (array[j] < array[i])
-			{
-				T temp = array[j];
-				array[j] = array[j - 1];
-				array[j - 1] = temp;
-			}
-		}
-	}
-}
+#include "DynamicArray.h"
 
 template<typename T>
 T add(T lhs, T rhs)
@@ -27,17 +10,27 @@ T add(T lhs, T rhs)
 
 int main()
 {
-	int testArray[5] = { 2, 4, 1, 5, 3 };
+	DynamicArray<int> test = DynamicArray<int>();
 
-	std::cout << "Before sort: ";
-	std::cout << testArray[0] << ", " << testArray[1] << ", " << testArray[2] << ", " << testArray[3] << ", " << testArray[4] << std::endl;
+	test.addItem(3);
+	test.addItem(4);
+	test.addItem(2);
+	test.addItem(5);
+	test.addItem(1);
+	test.addItem(9);
+	test.addItem(7);
+	test.addItem(10);
+	test.addItem(6);
+	test.addItem(8);
+	test.addItem(13);
+	test.addItem(15);
+	test.addItem(11);
+	test.addItem(12);
+	test.addItem(14);
 
-	bubbleSort(testArray, 5);
+	test.bubbleSort();
 
-	std::cout << "After sort: ";
-	std::cout << testArray[0] << ", " << testArray[1] << ", " << testArray[2] << ", " << testArray[3] << ", " << testArray[4] << std::endl;
-
-	ShopKeep<int, 5> potionSeller = ShopKeep<int, 5>();
+	test.print();
 
 	return 0;
 }
